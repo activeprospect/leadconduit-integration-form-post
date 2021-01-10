@@ -1,0 +1,7 @@
+.idea
+.travis.yml
+.eslintrc.js
+.rip/
+serverless.yml
+lambda.js
+test/

@@ -1,0 +1,50 @@
+
+# LeadConduit form POST integration
+# generated on Sun Jan 10 2021 16:45:35 GMT-0500 (Eastern Standard Time)
+
+service: leadconduit-form-post
+
+# Pin serverless framework to v2
+frameworkVersion: ">=2.1.0 <3.0.0"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 128
+  timeout: 30
+  environment:
+    NODE_ENV: ${opt:stage,'development'}
+
+package:
+  exclude:
+  - .git/**
+  - .github/**
+  - .rip/pkg/*
+  - .serverless/**
+  - coverage/**
+  - docs/**
+  - lib/ui/**
+  - pkg/**
+  - spec/**
+  - src/**
+  - test/**
+  - .eslintrc.js
+  - .gitignore
+  - .npmignore
+  - .npmrc
+  - .nyc_output
+  - .travis.yml
+  - Cakefile
+  - CHANGELOG.md
+  - Readme.md
+  - README.md
+
+functions:
+  form_post:
+    handler: lambda.form_post
+    name: leadconduit-form-post-outbound-form_post
+    events:
+      - http:
+          path: form_post
+          method: POST
+
