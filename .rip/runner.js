@@ -35,6 +35,7 @@ function handler (integrationObj, event, context, callback) {
     .catch(IntegrationError, e => {
       console.log('caught integration error');
       response = e.buildResponse();
+      console.log( response );
       callback(null, response);
     })
     .catch(e => {
@@ -53,6 +54,7 @@ function getInput (event) {
   // While a promise isn't necessary here, it is cleaner to start the chain here
   return new Promise((resolve, reject) => {
     let body;
+    let variables;
 
     try {
       // TODO: for SQS need to handle multiple records
@@ -60,7 +62,15 @@ function getInput (event) {
       // If from API gateway
       if (event.httpMethod) {
         const b = JSON.parse(event.body);
-        const parser = Parser(integration.request.variables());
+        if (typeof integration.requestVariables === 'function') {
+          variables = integration.requestVariables();
+        } else if (typeof integration.request === 'function' && typeof integration.request.variables === 'function') {
+          variables = integration.request.variables();
+        } else {
+          reject(new IntegrationError(400, 'no integration request variables'));
+          return;
+        }
+        const parser = Parser(variables);
         body = parser(b);
       }
 
@@ -80,12 +90,13 @@ function getInput (event) {
         return;
       }
     } catch (e) {
+      console.log(e);
       reject(new IntegrationError(400, 'parse failed'));
       return;
     }
 
     console.log('integration', integration);
-    console.log('BODY', body);
+    console.log('body', body);
     resolve(body);
   });
 }
