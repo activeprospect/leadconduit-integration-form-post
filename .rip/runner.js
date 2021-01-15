@@ -3,7 +3,6 @@
 
 const _ = require('lodash');
 const Promise = require('bluebird');
-// const request = Promise.promisify(require('request'), { multiArgs: true });
 const Parser = require('leadconduit-integration').test.types.parser;
 const AWSXRay = require('aws-xray-sdk-core');
 const AWS = AWSXRay.captureAWS(require('aws-sdk'));
@@ -33,13 +32,12 @@ function handler (integrationObj, event, context, callback) {
       callback(null, response);
     })
     .catch(IntegrationError, e => {
-      console.log('caught integration error');
       response = e.buildResponse();
-      console.log( response );
+      console.error('caught integration error', response);
       callback(null, response);
     })
     .catch(e => {
-      console.log('caught exception');
+      console.error('caught exception', e);
       callback(e);
     });
 }
@@ -90,7 +88,7 @@ function getInput (event) {
         return;
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
       reject(new IntegrationError(400, 'parse failed'));
       return;
     }
@@ -129,7 +127,7 @@ function run (vars) {
       console.log('in run callback, err:', err);
       console.log('in run callback, append:', append);
       if (err && !(err instanceof Error)) {
-        console.log(err);
+        console.error(err);
         reject(new IntegrationError(400, 'Error returned by integration must be an instance of Error'));
       }
 
