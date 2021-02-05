@@ -5,4 +5,4 @@ This module is for making form POST recipients on the [LeadConduit](http://activ
 Please see the
 [license agreement](http://creativecommons.org/licenses/by-nc-nd/4.0/).
 
-[![Build Status](https://travis-ci.org/activeprospect/leadconduit-integration-form-post.svg?branch=master)](https://travis-ci.org/activeprospect/leadconduit-integration-form-post)
+[![Build Status](https://github.com/activeprospect/leadconduit-integration-form-post/workflows/Node.js%20CI/badge.svg)](https://github.com/activeprospect/leadconduit-integration-form-post/actions)
