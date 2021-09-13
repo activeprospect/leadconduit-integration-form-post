@@ -1,0 +1,43 @@
+name: Deploy Integration as a Lambda to Development AWS Account
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14
+      uses: actions/setup-node@v1
+      with:
+        always-auth: true
+        node-version: '14.x'
+        registry-url: https://registry.npmjs.org
+        scope: '@activeprospect'
+
+    - name: Install integration dependencies
+      run: npm i
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - name: Install Serverless Framework
+      run: npm i serverless
+
+    - name: Install rip-cli
+      run: npm i -g @activeprospect/rip-cli
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - name: Install rip-runtime
+      run: npm i @activeprospect/rip-runtime
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - name: Run rip deploy
+      run: rip deploy development
+      env:
+        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID_DEVELOPMENT }}
+        AWS_REGION: 'us-east-1'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AUTOMATED_RETRIES_AWS_ACCESS_KEY_ID_DEVELOPMENT }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AUTOMATED_RETRIES_AWS_SECRET_ACCESS_KEY_DEVELOPMENT }}
