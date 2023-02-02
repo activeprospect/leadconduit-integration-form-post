@@ -174,23 +174,24 @@
   });
 
   describe('Outbound Form POST validation', function() {
+    const url = 'http://foo.com';
     it('should require valid URL', function() {
       return assert.equal(integration.validate({}), 'URL is required');
     });
     it('should require valid search outcome', function() {
       return assert.equal(integration.validate({
-        url: 'http://foo',
+        url,
         outcome_on_match: 'donkey'
       }), "Outcome on match must be 'success', 'failure', or 'error'");
     });
     it('should pass validation', function() {
       return assert.isUndefined(integration.validate({
-        url: 'http://foo'
+        url
       }));
     });
     it('should allow valid content-type header', function() {
       return assert.isUndefined(integration.validate({
-        url: 'http://foo',
+        url,
         header: {
           'Content-Type': 'x-www-form-urlencoded'
         }
@@ -198,7 +199,7 @@
     });
     it('should not allow invalid content-type header', function() {
       return assert.equal(integration.validate({
-        url: 'http://foo',
+        url,
         header: {
           'Content-Type': 'application/json'
         }
@@ -206,7 +207,7 @@
     });
     it('should not allow content-length header', function() {
       return assert.equal(integration.validate({
-        url: 'http://foo',
+        url,
         header: {
           'Content-Length': '10'
         }
@@ -214,7 +215,7 @@
     });
     return it('should not allow accept header', function() {
       return assert.equal(integration.validate({
-        url: 'http://foo',
+        url,
         header: {
           'Accept': 'text/whatever'
         }
