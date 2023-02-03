@@ -1,0 +1,21 @@
+name: Deploy Integration Lambda to AWS
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_to:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+
+jobs:
+  deploy:
+    uses: activeprospect/leadconduit-integration-custom/.github/workflows/lambda-deploy.yml@master
+    with:
+      deploy_to: ${{ inputs.deploy_to }}
+    secrets: inherit
