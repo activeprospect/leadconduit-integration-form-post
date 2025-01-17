@@ -15,7 +15,7 @@ describe('Wrap of custom integration', function() {
 
   it('wraps validate', () => {
     assert.isFunction(integration.validate);
-    assert.isNotEmpty(integration.validate({}))
+    assert.isNotEmpty(integration.validate({}));
   });
 
   it('wraps response', () => {
