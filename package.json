@@ -1,6 +1,6 @@
 {
   "name": "leadconduit-form-post",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "LeadConduit form POST integration",
   "main": "index.js",
   "scripts": {
